@@ -1,41 +1,41 @@
 package com.sercandorman.bookesh.dto;
 
+import java.util.List;
+
 public class OrderDTO {
 
-    private String customerName;
-    private String foodItem;
-    private int quantity;
+    private long customerId;
+    private long restaurantId;
+    private List<CartDTO> cartDTOList;
 
-    // Parametreli constructor
-    public OrderDTO(String customerName, String foodItem, int quantity) {
-        this.customerName = customerName;
-        this.foodItem = foodItem;
-        this.quantity = quantity;
+    public OrderDTO(long customerId, long restaurantId, List<CartDTO> cartDTOList) {
+        this.customerId = customerId;
+        this.restaurantId = restaurantId;
+        this.cartDTOList = cartDTOList;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public long getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerId(long customerId) {
+        this.customerId = customerId;
     }
 
-    // Getter ve Setter metodları
-    public String getFoodItem() {
-        return foodItem;
+    public long getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setFoodItem(String foodItem) {
-        this.foodItem = foodItem;
+    public void setRestaurantId(long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<CartDTO> getCartDTOList() {
+        return cartDTOList;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setCartDTOList(List<CartDTO> cartDTOList) {
+        this.cartDTOList = cartDTOList;
     }
 }
 

@@ -1,27 +1,40 @@
 package com.sercandorman.bookesh.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+
+import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "Orders")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String customerName;
-    private String foodItem;
-    private int quantity;
+    @ManyToOne
+    @JoinColumn(name = "CustomerId")
+    private Customer customer;
 
-    // Parametreli constructor
-    public Order(String customerName, String foodItem, int quantity) {
-        this.customerName = customerName;
-        this.foodItem = foodItem;
-        this.quantity = quantity;
+    @ManyToOne
+    @JoinColumn(name = "RestaurantId")
+    private Restaurant restaurant;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderFoodAndBeverage> orderFoodAndBeverageList;
+
+    private Double totalPrice;
+
+    public Order() {
     }
 
-    // Getter ve Setter metodları
+    public Order(Customer customer, Restaurant restaurant, Double totalPrice) {
+        this.customer = customer;
+        this.restaurant = restaurant;
+        this.totalPrice = totalPrice;
+    }
+
     public Long getId() {
         return id;
     }
@@ -30,27 +43,35 @@ public class Order {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getFoodItem() {
-        return foodItem;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setFoodItem(String foodItem) {
-        this.foodItem = foodItem;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public List<OrderFoodAndBeverage> getOrderFoodAndBeverageList() {
+        return orderFoodAndBeverageList;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setOrderFoodAndBeverageList(List<OrderFoodAndBeverage> orderFoodAndBeverageList) {
+        this.orderFoodAndBeverageList = orderFoodAndBeverageList;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

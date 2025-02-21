@@ -26,13 +26,19 @@ public class Order {
 
     private Double totalPrice;
 
+    private Boolean orderDelivered;
+
+    private Long orderDriverId;
+
     public Order() {
     }
 
-    public Order(Customer customer, Restaurant restaurant, Double totalPrice) {
+    public Order(Customer customer, Restaurant restaurant, Double totalPrice, Boolean orderDelivered, Long orderDriverId) {
         this.customer = customer;
         this.restaurant = restaurant;
         this.totalPrice = totalPrice;
+        this.orderDelivered = orderDelivered;
+        this.orderDriverId = orderDriverId;
     }
 
     public Long getId() {
@@ -73,5 +79,21 @@ public class Order {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Boolean getOrderDelivered() {
+        return orderDelivered;
+    }
+
+    public void setOrderDelivered(Boolean orderDelivered) {
+        this.orderDelivered = orderDelivered;
+    }
+
+    public Long getOrderDriverId() {
+        return orderDriverId;
+    }
+
+    public void setOrderDriverId(Long orderDriverId) {
+        this.orderDriverId = orderDriverId;
     }
 }

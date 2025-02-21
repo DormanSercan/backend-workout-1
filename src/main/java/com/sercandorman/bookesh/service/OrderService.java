@@ -3,6 +3,7 @@ package com.sercandorman.bookesh.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sercandorman.bookesh.dto.OrderDTO;
+import com.sercandorman.bookesh.dto.OrderInformationDTO;
 import com.sercandorman.bookesh.model.*;
 import com.sercandorman.bookesh.helper.APIHelper;
 import com.sercandorman.bookesh.rabbitmq.RabbitMQProducer;
@@ -34,7 +35,9 @@ public class OrderService {
         Order order = new Order(
                 customerRepository.findByIdOrThrow(orderDTO.getCustomerId()),
                 restaurantRepository.findByIdOrThrow(orderDTO.getRestaurantId()),
-                APIHelper.calculateCartTotalPrice(orderDTO.getCartDTOList(), foodAndBeverageRepository));
+                APIHelper.calculateCartTotalPrice(orderDTO.getCartDTOList(), foodAndBeverageRepository),
+                false,
+                null);
         orderRepository.save(order);
 
         List<OrderFoodAndBeverage> orderFoodAndBeverageList = APIHelper.prepareOrderFoodAndBeverageList(order, orderDTO.getCartDTOList());
@@ -42,13 +45,20 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public void sendOrderToQueue(OrderDTO orderDTO) {
+    public void sendOrderToQueue(Order order) {
         try {
             //Convert DTO to JSON String and Send to RabbitMQ
-            String orderJsonString = objectMapper.writeValueAsString(orderDTO);
+            String orderJsonString = objectMapper.writeValueAsString(order);
             rabbitMQProducer.send(orderJsonString);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateOrder(OrderInformationDTO orderInformationDTO) {
+        Order order = orderRepository.findByIdOrThrow(orderInformationDTO.getOrderId());
+        order.setOrderDriverId(orderInformationDTO.getOrderDriverId());
+        order.setOrderDelivered(true);
+        orderRepository.save(order);
     }
 }

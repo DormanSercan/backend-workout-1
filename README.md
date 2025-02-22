@@ -49,11 +49,12 @@ docker-compose up -d
 
 This will start the services in detached mode, running each microservice in a separate Docker container. The following services will be set up:
 
-**Order Service:** Handles all order-related operations (CRUD for orders).
-**Driver Finder Service:** Determines which driver to assign to an order.
-**Eureka Server:** Registers and discovers microservices.
-**PostgreSQL:** Provides the relational database for storing order data.
-**RabbitMQ:** Manages message queues for communication between services.
+**Order Service:** Handles all order-related operations (CRUD for orders).  
+**Driver Finder Service:** Determines which driver to assign to an order.  
+**Eureka Server:** Registers and discovers microservices.  
+**PostgreSQL:** Provides the relational database for storing order data.  
+**RabbitMQ:** Manages message queues for communication between services.  
+
 ## Usage
 Once the services are up and running, you can use the following API endpoints:
 
@@ -93,14 +94,18 @@ The application follows a microservices architecture, with each service responsi
 3.  **Eureka Server:** Provides service discovery for all the services, ensuring they can dynamically register themselves and communicate with each other.
 
 ### Flow:
-**Order Service** creates a new order and sends an event to **RabbitMQ.**
-**Driver Finder Service** listens to **RabbitMQ**, processes the order, and assigns a mock driver to the order.
+**Order Service** creates a new order and sends an event to **RabbitMQ.**  
+**Driver Finder Service** listens to **RabbitMQ**, processes the order, and assigns a mock driver to the order.  
 Once the driver is assigned, the **Order Service** is notified via an **API call** to the `/api/orderCompleted` endpoint to mark the order as completed and update the status in the database.
 
 ### Troubleshooting & Notes
 **PostgreSQL:**
 Make sure the database service is running and accessible.
 Ensure that you have initialized the database tables and schema as expected.
+### Database Backup
+A backup of the database is available in the `bookesh_dump.sql` file, which you can use to restore the database to its original state.
+[bookesh_dump.sql](https://github.com/DormanSercan/backend-workout-1/blob/main/bookesh_dump.sql)
+
 
 **RabbitMQ:**
 RabbitMQ must be running for message queue functionality to work.

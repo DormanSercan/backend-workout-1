@@ -32,7 +32,6 @@
 ### Prerequisites
 
 *   **Docker** & **Docker Compose** installed on your system.
-*   **PostgreSQL** & **RabbitMQ** running on your local machine or configured with Docker Compose.
 
 ### Clone the repository
 
@@ -54,6 +53,23 @@ This will start the services in detached mode, running each microservice in a se
 **Eureka Server:** Registers and discovers microservices.  
 **PostgreSQL:** Provides the relational database for storing order data.  
 **RabbitMQ:** Manages message queues for communication between services.  
+
+### Accessing PostgreSQL Database via pgAdmin   
+To view the database data visually, you can connect to the PostgreSQL container from pgAdmin:
+1.  Open **pgAdmin**.
+2.  Click on **Add New Server**.
+3.  Under **Connection**, set:
+    *   Host: ```localhost``` (since the container port is mapped to the host)
+    *   Port: ```5432```
+    *   Username: ```postgres```
+    *   Password: ```postgres```
+4.  Click **Save** and connect to view your tables and data.
+
+### Accessing RabbitMQ Management Interface  
+RabbitMQ provides a web-based management UI:
+*   **URL**: ```http://localhost:15672```
+*   **Username**: ```guest```
+*   **Password**: ```guest```
 
 ## Usage
 Once the services are up and running, you can use the following API endpoints:
@@ -100,15 +116,18 @@ Once the driver is assigned, the **Order Service** is notified via an **API call
 
 ### Troubleshooting & Notes
 **PostgreSQL:**
-Make sure the database service is running and accessible.
-Ensure that you have initialized the database tables and schema as expected.
+*   Ensure the database service is running and accessible.  
+*   Use pgAdmin or a database client to verify the tables and data.  
+*   If needed, restore the database using the provided backup:  
+``` docker exec -i postgres_db psql -U postgres -d bookesh < bookesh_dump.sql```
+
 ### Database Backup
 A backup of the database is available in the `bookesh_dump.sql` file, which you can use to restore the database to its original state.
 [bookesh_dump.sql](https://github.com/DormanSercan/backend-workout-1/blob/main/bookesh_dump.sql)
 
 
 **RabbitMQ:**
-RabbitMQ must be running for message queue functionality to work.
+Ensure RabbitMQ is running and accessible via the management interface (http://localhost:15672).  
 Check if queues and exchanges are set up properly (handled by Docker Compose).
 
 ### Contributing
